@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative AI Suggestion Tool</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            color: #0f0;
+            display: flex;
+        }
+        header {
+            background-color: #111;
+            color: #0f0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 72px; /* Large font size */
+            font-weight: bold;
+            text-align: left;
+            padding: 20px;
+            width: 30%; /* Left side takes 30% of the width */
+            border-right: 2px solid #0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .description {
+            font-size: 16px;
+            font-weight: normal;
+            margin-top: 10px;
+            color: #0f0;
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+            width: 70%; /* Right side takes 70% of the width */
+        }
+        form {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #111;
+            border: 1px solid #0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 100%;
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+            resize: vertical;
+        }
+        button {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        button:hover {
+            background-color: #1f1;
+        }
+        .result-box {
+            margin-top: 20px;
+        }
+        .copy-button {
+            background-color: #28a745;
+            margin-left: 10px;
+            color: #000;
+        }
+        .copy-button:hover {
+            background-color: #2dc653;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #0f0;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+    <script>
+        function copyToClipboard() {
+            const resultTextarea = document.getElementById('result');
+            resultTextarea.select();
+            resultTextarea.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('Result copied to clipboard!');
+        }
+
+        // Preserve input values after form submission
+        window.onload = function () {
+            const textbox1 = document.getElementById('textbox1');
+            const savedInstruction = localStorage.getItem('textbox1');
+            if (savedInstruction) {
+                textbox1.value = savedInstruction;
+            }
+
+            textbox1.addEventListener('input', function () {
+                localStorage.setItem('textbox1', textbox1.value);
+            });
+        };
+    </script>
+</head>
+<body>
+    <header>
+        GENERATIVE AI BUDDY!
+        <div class="description">
+            Custom Generative AI Tool – Your AI, your rules! Tell it what vibe to rock (like "Be my witty sidekick") and hit it with a question or task (like "Explain the theory of relativity"). It’ll whip up a response that’s totally on point. Fun, fast, and totally customizable!
+        </div>
+    </header>
+    <main>
+        <form method="POST">
+            <div>
+                <label for="textbox1">Prompt to Instruct the AI:</label>
+                <textarea id="textbox1" name="textbox1" rows="6" cols="100">
+You are a machine learning and NLP expert. Analyze the given problem statement and suggest the best approach to solve it.
+                </textarea>
+            </div>
+            <div>
+                <label for="textbox2">Problem Statement/Question:</label>
+                <textarea id="textbox2" name="textbox2" rows="6" cols="100">{{ saved_text }}</textarea>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+            <div class="result-box">
+                <label for="result">Result:</label>
+                <textarea id="result" rows="15" cols="120" readonly>{{ result_text }}</textarea>
+                <button type="button" class="copy-button" onclick="copyToClipboard()">Copy to Clipboard</button>
+            </div>
+        </form>
+        <footer>
+            <p>Powered by Google's Gemini | Built with ❤️</p>
+        </footer>
+    </main>
+</body>
+</html>
